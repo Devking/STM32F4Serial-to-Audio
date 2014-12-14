@@ -1,3 +1,5 @@
+// code provided by Prof. Krishnamurty of NYU Polytechnic
+
 #include <stdio.h>
 #include "STM32F4xx.h"
 

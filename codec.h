@@ -1,3 +1,6 @@
+// code provided from A. Finkelmeyer
+// from http://www.mind-dump.net/configuring-the-stm32f4-discovery-for-audio
+
 //*************************************
 //
 //  header for codec related functions

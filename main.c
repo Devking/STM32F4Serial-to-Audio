@@ -62,7 +62,7 @@ int32_t main(void){
 	init_serial_port_usb();  // initialize serial port (via micro USB)
 	init_speaker();  // initialize speaker (audio out)
 	
-	int16_t audio_sample;	// to be sent to the speaker
+	int16_t audio_sample;	// 16-bit packet to be sent to the speaker
 	float audio_freq = 0; // frequency of sound to send, initialized to 0
 	
 	int loudness = 250; // amplitude of sound
@@ -120,6 +120,8 @@ int32_t main(void){
 					} else { // a new note has been pressed
 						
 						switch (c) {
+						// just a note that each case statement necessarily must be lengthy, because we do not want the same functionality for all possibly keyboard buttons
+						// for each case, we will output the correct corresponding pitch, print the key pressed, set the last time a note was pressed, and update which was the last note pressed
 								case 'a': write_serial_usb_byte(c); audio_freq = C5; last_freq_changed_time = t; lastnote = c; break;
 								case 'w': write_serial_usb_byte(c); audio_freq = CS5; last_freq_changed_time = t; lastnote = c;  break;
 								case 's': write_serial_usb_byte(c); audio_freq = D5; last_freq_changed_time = t; lastnote = c;  break;
@@ -156,25 +158,23 @@ int32_t main(void){
 					// will also skip this if the system is already not outputting sound
 					
 					if (t > (last_freq_changed_time + noteTimeDelay) && audio_freq != 0) {
-						audio_freq = 0;
-						last_freq_changed_time = t;
-						lastnote = 255;
+						audio_freq = 0;				// turns "off" audio output
+						last_freq_changed_time = t;	// set this as the last time a freq changed
+						lastnote = 255;				// reset the last pitch played
 					}
 					
-				} // end check byte
-			} // end check usb
-			last_read_time = t;
-		} // end last read if statementA
+				} // end "check byte" conditional
+			} // end "check usb" conditional
+			last_read_time = t;		// update last time that we have checked the serial port
+		} // end "if timeDelay" conditional
 
 		
 		// you must ALWAYS send this output to create a full, proper sine wave
 		// the goal is to get this to be output at uniform intervals
-		// what happens if a note is changed? will disrupt the sine wave...
+		// when the note/frequency is changed abruptly, this may distort the sine wave
 		audio_sample = (int16_t) (loudness * arm_sin_f32(audio_freq*msTicks/10000)); // calculate one sample for the speaker
-		// audio_sample += (int16_t) (loudness/2 * arm_sin_f32(audio_freq*2*msTicks/10000)); // send harmonic
+		// audio_sample += (int16_t) (loudness/10 * arm_sin_f32(audio_freq*2*msTicks/10000)); // test code to send a single harmonic
 		send_to_speaker(audio_sample);	// send one single audio TIME sample to the audio output
-		
-		//if (msTicks > ) msTicks = 0;
 	}
 	
 }

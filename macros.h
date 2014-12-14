@@ -1,7 +1,8 @@
 #ifndef macros
 #define macros
 
-// these are the frequencies that correspond to each pitch
+// Here I define different macros for different pitches
+// Set to their actual frequencies (i.e., the A4 pitch corresponds to 440 Hz)
 
 #define C4 261
 #define D4 294
