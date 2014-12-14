@@ -1,0 +1,8 @@
+The STM32F4 Discovery Board USB micro connector can be used to implement a serial port to communicate with another microcontroller or a computer. To connect to a computer, you can use a USB micro to regular USB 2.0 cable (this is the typical cable used in mobile phone chargers). This cable would be connected to the USB micro port on the STM32F4 Discovery board (this port is on the opposite side of the board from the programming connector). The code in this Keil project utilizes the library from http://stm32f4-discovery.com/2014/08/library-24-virtual-com-port-vcp-stm32f4xx/ to make a serial port connection through the micro USB port.  
+
+On the computer side, you will need to install the STM32 virtual COM port driver from http://www.st.com/web/en/catalog/tools/PF257938# .  After this driver is installed, you should see a serial port (windows device manager calls this a COM port) on the computer when you run this code on the Discovery board (you might sometimes need to unplug and replug the USB cable to see the COM port). 
+
+You can use a program such as Putty (http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) to connect to the serial (COM) port on the computer side (in Putty, select the Serial option under Connection type in the main window of Putty and change COM1 under Serial line to the COM port number corresponding to the STM32 USB connection; you can see the COM port number in the device manager in Windows).
+
+The example in this Keil project echoes bytes received from the serial port back to the serial port. When you run this on your Discovery board and connect from the computer using Putty, you should see that any characters that you type into Putty will be echoed back (i.e., will appear in the Putty terminal).
+ 
